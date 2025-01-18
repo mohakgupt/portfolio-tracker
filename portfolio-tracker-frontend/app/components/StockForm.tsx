@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import type { ChangeEvent } from 'react';
-import { addStock, updateStock, fetchStockQuote } from '../services/api';
+import { addStock, fetchStockQuote } from '../services/api';
 import { Box, Button, TextField, Typography } from '@mui/material';
 
 const StockForm: React.FC = () => {

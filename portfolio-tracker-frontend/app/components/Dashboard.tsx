@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { calculatePortfolioValue, fetchAllStocks, fetchPortfolioMetrics } from '~/services/api';
-import { Box, CircularProgress, Divider, Grid, List, ListItem, Paper, Typography } from '@mui/material';
+import { fetchPortfolioMetrics } from '~/services/api';
+import { Box, CircularProgress, Grid, Paper, Typography } from '@mui/material';
 import {PieChart} from '@mui/x-charts/PieChart';
-import { BarChart, LineChart } from '@mui/x-charts';
+import { BarChart } from '@mui/x-charts';
 
 // Use the same Stock type as in Home
 interface Stock {

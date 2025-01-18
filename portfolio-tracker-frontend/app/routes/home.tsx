@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, {  } from 'react';
 import Dashboard from '../components/Dashboard';
-import { fetchAllStocks, calculatePortfolioValue } from '../services/api';
-import Layout from '~/components/Navbar';
-import { BrowserRouter, Route, Routes } from 'react-router';
+import { Route, Routes } from 'react-router';
 import StockList from '~/components/StockList';
 import StockForm from '~/components/StockForm';
 
