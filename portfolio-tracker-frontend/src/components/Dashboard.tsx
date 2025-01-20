@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { fetchPortfolioMetrics } from '~/services/api';
+import { fetchPortfolioMetrics } from '../services/api';
 import { Box, CircularProgress, Grid, Paper, Typography } from '@mui/material';
 import {PieChart} from '@mui/x-charts/PieChart';
 import { BarChart } from '@mui/x-charts';
 
 // Use the same Stock type as in Home
-interface Stock {
-  id: number;
-  stockName: string;
-  ticker: string;
-  quantity: number;
-  buyPrice: number;
-  purchaseDate: string;
-}
+// interface Stock {
+//   id: number;
+//   stockName: string;
+//   ticker: string;
+//   quantity: number;
+//   buyPrice: number;
+//   purchaseDate: string;
+// }
 
 // interface DashboardProps {
 //   stocks: Stock[];
