@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_REACT_APP_BACKEND_URL || "http://localhost:8080/api/stocks";
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_BACKEND_URL || "https://portfolio-tracker-t0ws.onrender.com";
 
 export const fetchAllStocks = async () => {
   const response = await axios.get(API_BASE_URL);
