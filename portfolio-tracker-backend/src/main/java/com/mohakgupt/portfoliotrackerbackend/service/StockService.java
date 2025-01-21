@@ -53,7 +53,6 @@ public class StockService {
 
     public Map<String, Object> getPortfolioMetrics() throws IOException {
         List<Stock> stocks = stockRepository.findAll();
-
         double totalInvested = stocks.stream()
                 .mapToDouble(stock -> stock.getBuyPrice() * stock.getQuantity())
                 .sum();
@@ -93,19 +92,19 @@ public class StockService {
                         Stock::getTicker,
                         stock -> (currentPrices.get(stock.getTicker()) * stock.getQuantity()) / totalCurrentValue * 100
                 ));
+        return new HashMap<>() {{
+            put("totalInvested", totalInvested);
+            put("rateOfReturn", rateOfReturn);
+            put("yearlyInvestment", yearlyInvestment);
+            put("totalInvestments", totalInvestments);
+            put("totalCurrentValue", totalCurrentValue);
+            put("topPerformingStock", topStock != null ? Map.of(
+                    "ticker", topStock.getTicker(),
+                    "currentValue", currentPrices.get(topStock.getTicker()) * topStock.getQuantity()
+            ) : null);
+            put("portfolioDistribution", portfolioDistribution);
 
-        return Map.of(
-                "totalInvested", totalInvested,
-                "rateOfReturn", rateOfReturn,
-                "yearlyInvestment", yearlyInvestment,
-                "totalInvestments", totalInvestments,
-                "totalCurrentValue", totalCurrentValue,
-                "topPerformingStock", topStock != null ? Map.of(
-                        "ticker", topStock.getTicker(),
-                        "currentValue", currentPrices.get(topStock.getTicker()) * topStock.getQuantity()
-                ) : null,
-                "portfolioDistribution", portfolioDistribution
-        );
+        }};
     }
 
 

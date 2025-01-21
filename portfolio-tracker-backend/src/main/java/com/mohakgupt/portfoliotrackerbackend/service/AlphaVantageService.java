@@ -13,8 +13,8 @@ import java.util.Map;
 public class AlphaVantageService {
     private final StockDataUtil stockDataUtil = new StockDataUtil();
 
-//    private final String API_KEY = "OJE7IC30TWP9HNK4";
-    private final String API_KEY = "demo";
+    private final String API_KEY = "OJE7IC30TWP9HNK4";
+//    private final String API_KEY = "demo";
     private final String BASE_URL = "https://www.alphavantage.co/query";
 
     public Map<String, Object> getStockQuote(String ticker) {
