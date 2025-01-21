@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_REACT_APP_BACKEND_URL || "https://portfolio-tracker-t0ws.onrender.com";
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_BACKEND_URL || "https://portfolio-tracker-t0ws.onrender.com:8080/api/stocks";
 
 export const fetchAllStocks = async () => {
   const response = await axios.get(API_BASE_URL);
@@ -42,6 +42,6 @@ export const calculatePortfolioValue = async (stocks: any[]) => {
 };
 
 export const fetchPortfolioMetrics = async () => {
-    const response = await axios.get('http://localhost:8080/api/stocks/metrics');
+    const response = await axios.get('https://portfolio-tracker-t0ws.onrender.com:8080/api/stocks/metrics');
     return response.data;
 };
