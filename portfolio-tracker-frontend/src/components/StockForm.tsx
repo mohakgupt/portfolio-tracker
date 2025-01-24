@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import type { ChangeEvent } from 'react';
 import { addStock, fetchStockQuote } from '../services/api';
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, TextField, Typography } from '@mui/material';
+import useDebounce from '../services/useDebounce';
 
 const StockForm: React.FC = () => {
   const [stockName, setStockName] = useState('');
@@ -10,33 +11,43 @@ const StockForm: React.FC = () => {
   const [buyPrice, setBuyPrice] = useState(0);
   const [currentPrice, setCurrentPrice] = useState(0);
   const [purchaseDate, setPurchaseDate] = useState(new Date().toISOString().split('T')[0]);
+  const [loading, setLoading] = useState(false);
+  const debounceTicker = useDebounce(ticker, 500);
+
+  useEffect(() => {
+    const updatePrice = async () => {
+      if (debounceTicker.length >= 1) {
+        try {
+          setLoading(true);
+          const {price, name} = await fetchStockQuote(debounceTicker);
+          setLoading(false);
+          if (!isNaN(price)) {
+            setCurrentPrice(price);
+            setStockName(name);
+          }
+        } catch (error) {
+          console.error("Error fetching stock quote:", error);
+          setCurrentPrice(0);
+          setStockName("");
+        }
+      } else {
+        setCurrentPrice(0);
+        setStockName("");
+      }
+    }
+    updatePrice();
+  }, [debounceTicker]);
 
   useEffect(() => {
       setBuyPrice(parseFloat((currentPrice*quantity).toFixed(2)));
       document.title = "Add Stock - Portfolio Tracker";
   }, [currentPrice, quantity])
-  
-  
-  const handleTickerChange = async (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+
+  const handleTickerChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const newTicker = e.target.value.toUpperCase();
     setTicker(newTicker);
-    
-    if (newTicker.length >= 1) {
-      try {
-        const {price, name} = await fetchStockQuote(newTicker);
-        if (!isNaN(price)) {
-          setCurrentPrice(price);
-          setStockName(name);
-        }
-      } catch (error) {
-        console.error("Error fetching stock quote:", error);
-        setCurrentPrice(0);
-        setStockName("");
-      }
-    } else {
-      setCurrentPrice(0);
-      setStockName("");
-    }
+      
+
   };
 
   const handleQuantityChange = async (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -48,20 +59,15 @@ const StockForm: React.FC = () => {
     e.preventDefault();
     if (buyPrice > 0) {
       const stockData = { stockName, ticker, quantity, buyPrice, purchaseDate};
-  
+      
       try {
-        // if (stock?.id) {
-        //   await updateStock(stock.id, stockData);
-        // } 
-        // else {
+          setLoading(true);
           await addStock(stockData);
+          setLoading(false);
           throw("Stock added successfully!");
-        // }
-        // onSubmit();
-      } catch (error) {
-        throw("Error submitting stock. Please try again after some time.");
-        console.error("Error submitting stock:", error);
-      }
+        } catch (error) {
+          throw("Error submitting stock. Please try again after some time.");
+        }
 
     }
 
@@ -71,6 +77,9 @@ const StockForm: React.FC = () => {
     <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: "600px", margin: "2em auto" }}>
       <Typography variant="h5" gutterBottom>
         Add Stock
+        {loading ? 
+        <CircularProgress size={20} sx={{marginLeft: "1em"}}/>
+         : null}
       </Typography>
       <TextField
         fullWidth
@@ -86,7 +95,7 @@ const StockForm: React.FC = () => {
         label="Ticker"
         name="ticker"
         value={ticker}
-        onChange={(e) => handleTickerChange(e)}
+        onChange={(e) => {handleTickerChange(e)}}
         margin="normal"
         required
       />
