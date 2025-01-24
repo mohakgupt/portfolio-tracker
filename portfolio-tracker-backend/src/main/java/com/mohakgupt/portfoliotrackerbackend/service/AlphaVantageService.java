@@ -1,6 +1,7 @@
 package com.mohakgupt.portfoliotrackerbackend.service;
 
 import com.mohakgupt.portfoliotrackerbackend.util.StockDataUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
@@ -13,8 +14,8 @@ import java.util.Map;
 public class AlphaVantageService {
     private final StockDataUtil stockDataUtil = new StockDataUtil();
 
-    private final String API_KEY = "OJE7IC30TWP9HNK4";
-//    private final String API_KEY = "demo";
+    @Value("${alpha.vantage.api.key}")
+    private String API_KEY;
     private final String BASE_URL = "https://www.alphavantage.co/query";
 
     public Map<String, Object> getStockQuote(String ticker) {
@@ -36,7 +37,7 @@ public class AlphaVantageService {
             return null;
         }
         // Extract price and look up the name
-        String price = (String) globalQuote.get("05. price");
+        String price = (String) globalQuote.getOrDefault("05. price", "0");
         String name = stockDataUtil.getStockName(ticker);
 
         // Return map with price and name
