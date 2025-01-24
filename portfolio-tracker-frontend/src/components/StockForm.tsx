@@ -24,9 +24,7 @@ const StockForm: React.FC = () => {
     if (newTicker.length >= 1) {
       try {
         const {price, name} = await fetchStockQuote(newTicker);
-        console.log(price, name)
         if (!isNaN(price)) {
-          // console.log(price);
           setCurrentPrice(price);
           setStockName(name);
         }
@@ -43,7 +41,6 @@ const StockForm: React.FC = () => {
 
   const handleQuantityChange = async (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const newQuantity = Math.max(0, Number(e.target.value)) | 0;
-    // console.log(newQuantity)
     setQuantity(newQuantity);
   };
 

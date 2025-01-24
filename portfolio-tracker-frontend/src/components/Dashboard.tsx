@@ -4,45 +4,8 @@ import { Box, CircularProgress, Grid, Paper, Typography } from '@mui/material';
 import {PieChart} from '@mui/x-charts/PieChart';
 import { BarChart } from '@mui/x-charts';
 
-// Use the same Stock type as in Home
-// interface Stock {
-//   id: number;
-//   stockName: string;
-//   ticker: string;
-//   quantity: number;
-//   buyPrice: number;
-//   purchaseDate: string;
-// }
-
-// interface DashboardProps {
-//   stocks: Stock[];
-// //   setStocks: React.Dispatch<React.SetStateAction<Stock[]>>;
-// }
-
 const Dashboard: React.FC = () => {
-    
-    // const [metrics, setMetrics] = useState<{
-    //     totalValue: number;
-    //     topStock: Stock | null;
-    //     distribution: { [key: string]: number };
-    // }>({
-    //     totalValue: 0,
-    //     topStock: null,
-    //     distribution: {}
-    // });
 
-    // useEffect(() => {
-    //     const fetchMetrics = async () => {
-    //         try {
-    //             const data = await fetchPortfolioMetrics();
-    //             setMetrics(data);
-    //         } catch (error) {
-    //             console.error("Error fetching metrics:", error);
-    //         }
-    //     };
-
-    //     fetchMetrics();
-    // }, []);
     const [metrics, setMetrics] = useState<any>(null);
     const [yearlyData, setYearlyData] = useState<any>(null);
     const [pieData, setPieData] = useState<any>([]);
@@ -54,7 +17,6 @@ const Dashboard: React.FC = () => {
             try {
                 const data = await fetchPortfolioMetrics();
                 setMetrics(data);
-                console.log(data);
                 updateData(data);
             } catch (error) {
                 console.error("Error fetching portfolio metrics:", error);
@@ -91,26 +53,9 @@ if (!loading) {
   }
 
   return (
-    // <Box sx={{ p: 3 }}>
-    //         <Typography variant="h4" gutterBottom>
-    //             Portfolio Dashboard
-    //         </Typography>
-    //         <Typography variant="h6">
-    //             Total Value: ${metrics.totalValue.toFixed(2)}
-    //         </Typography>
-    //         {metrics.topStock && (
-    //             <Typography variant="h6">
-    //                 Top-Performing Stock: {metrics.topStock.stockName} ({metrics.topStock.ticker}) - ${metrics.topStock.buyPrice.toFixed(2)}
-    //             </Typography>
-    //         )}
-    //         <Divider sx={{ my: 2 }} />
-    //         {Object.keys(metrics.distribution).length > 0 ? <><Typography variant="h6" margin={"2em 0"}>Portfolio Distribution:</Typography>
-    //         <PieChart series={[{arcLabelRadius: '60%', arcLabelMinAngle: 60, arcLabel: (item) => `${item.value.toFixed(2)}%`, data: pieData}]} width={400} height={200}/></>:<Typography>Create your portfolio to view metrics.</Typography>}
-    //     </Box>
     <Box sx={{ padding: "2rem" }}>
       <Typography variant="h4" gutterBottom>
         Portfolio Dashboard
-        {/* {metrics.totalCurrentValue} */}
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
@@ -125,12 +70,6 @@ if (!loading) {
             <Typography variant="h4">{metrics.rateOfReturn.toFixed(2)}%</Typography>
           </Paper>
         </Grid>
-        {/* <Grid item xs={12} md={3}>
-          <Paper elevation={3} sx={{ padding: "1rem", textAlign: "center" }}>
-            <Typography variant="h6">Yearly Investment</Typography>
-            <Typography variant="h4">${yearlyData[yearlyData.length - 1]?.amount || 0}</Typography>
-          </Paper>
-        </Grid> */}
         <Grid item xs={12} md={4}>
           <Paper elevation={3} sx={{ padding: "1rem", textAlign: "center" }}>
             <Typography variant="h6">Total Investments</Typography>
@@ -159,23 +98,6 @@ if (!loading) {
           <Typography variant="h6" gutterBottom textAlign={"center"}>
             Portfolio Distribution
           </Typography>
-          {/* <LineChart
-            height={300}
-            xAxis={[{ data: yearlyData.map((data: { year: any; }) => data.year) }]}
-            series={[
-              {
-                data: yearlyData.map((_data: any, index: number) => {
-                  // Mock cumulative return data
-                  return index > 0
-                  ? (yearlyData[index].amount - yearlyData[index - 1].amount) /
-                  yearlyData[index - 1].amount
-                  : 0;
-                  }),
-                  label: "Rate of Return",
-                  },
-                  ]}
-                  >
-                  </LineChart> */}
         <Box sx={{display:"flex", alignItems: "center", justifyContent: "center", height: "100%"}}>
           <PieChart 
           series={[{arcLabelRadius: '60%', arcLabelMinAngle: 60, arcLabel: (item) => `${item.value.toFixed(2)}%`, data: pieData}]} 

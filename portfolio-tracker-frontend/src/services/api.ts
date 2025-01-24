@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = (import.meta.env.VITE_REACT_APP_BACKEND_URL || "https://portfolio-tracker-t0ws.onrender.com") + "/api/stocks";
+const API_BASE_URL = `${(import.meta.env.VITE_REACT_APP_BACKEND_URL || "https://portfolio-tracker-t0ws.onrender.com")}/api/stocks`;
 
 export const fetchAllStocks = async () => {
   const response = await axios.get(API_BASE_URL);
@@ -26,9 +26,6 @@ export const updateStock = async (id: number, updatedStock: any) => {
   return response.data;
 };
 
-/**
- * Calculates the total portfolio value by fetching real-time stock prices.
- */
 export const calculatePortfolioValue = async (stocks: any[]) => {
   let totalValue = 0;
 
