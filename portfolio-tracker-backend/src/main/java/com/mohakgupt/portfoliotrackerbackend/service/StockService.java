@@ -61,7 +61,7 @@ public class StockService {
         // Simulate fetching current prices for all stocks (replace with actual API calls)
         Map<String, Double> currentPrices = stocks.stream()
                 .collect(Collectors.toMap(Stock::getTicker, stock -> {
-                    return (double) alphaVantageService.getStockQuote("MSFT").get("price");
+                    return (double) alphaVantageService.getStockQuote(stock.getTicker()).get("price");
                 }));
 
         double totalCurrentValue = stocks.stream()
