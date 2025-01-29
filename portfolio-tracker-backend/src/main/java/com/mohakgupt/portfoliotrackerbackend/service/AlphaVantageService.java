@@ -29,21 +29,26 @@ public class AlphaVantageService {
                 .queryParam("symbol", ticker)
                 .queryParam("apikey", API_KEY)
                 .toUriString();
-
+        System.out.println(url);
         Map<String, Object> response = restTemplate.getForObject(url, Map.class);
+        System.out.println(response.toString());
 
         Map<String, Object> globalQuote = (Map<String, Object>) response.get("Global Quote");
+        System.out.println(globalQuote.toString());
         if(globalQuote == null) {
             return null;
         }
         // Extract price and look up the name
         String price = (String) globalQuote.getOrDefault("05. price", "0");
+        System.out.println(price);
         String name = stockDataUtil.getStockName(ticker);
+        System.out.println(name);
 
         // Return map with price and name
         Map<String, Object> result = new HashMap<>();
         result.put("price", Double.parseDouble(price));
         result.put("name", name);
+        System.out.println(result.toString());
         return result;
     }
 }
