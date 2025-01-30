@@ -64,7 +64,7 @@ public class StockService {
                 currentPrices.put(stock.getTicker(), (double) alphaVantageService.getStockQuote(stock.getTicker()).get("price"));
             }
         }
-
+        System.out.println(currentPrices.toString());
         double totalCurrentValue = stocks.stream()
                 .mapToDouble(stock -> currentPrices.get(stock.getTicker()) * stock.getQuantity())
                 .sum();
@@ -89,10 +89,11 @@ public class StockService {
 
         // Portfolio distribution
         Map<String, Double> portfolioDistribution = stocks.stream()
-                .collect(Collectors.toMap(
+                .collect(Collectors.groupingBy(
                         Stock::getTicker,
-                        stock -> (currentPrices.get(stock.getTicker()) * stock.getQuantity()) / totalCurrentValue * 100
+                        Collectors.averagingDouble(stock -> (currentPrices.get(stock.getTicker()) * stock.getQuantity()) / totalCurrentValue * 100)
                 ));
+        System.out.println(portfolioDistribution.toString());
         return new HashMap<>() {{
             put("totalInvested", totalInvested);
             put("rateOfReturn", rateOfReturn);
