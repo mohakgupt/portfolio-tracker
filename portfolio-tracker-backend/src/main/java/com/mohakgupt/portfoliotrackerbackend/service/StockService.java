@@ -24,8 +24,9 @@ public class StockService {
     private final StockRepository stockRepository;
     private final AlphaVantageService alphaVantageService;
 
-    public StockService(StockRepository stockRepository) {
-        this.stockRepository = stockRepository; this.alphaVantageService = new AlphaVantageService();
+    public StockService(StockRepository stockRepository, AlphaVantageService alphaVantageService) {
+        this.stockRepository = stockRepository;
+        this.alphaVantageService = alphaVantageService;
     }
 
     public List<Stock> getAllStocks() {
