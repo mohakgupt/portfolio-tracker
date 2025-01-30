@@ -58,12 +58,12 @@ public class StockService {
                 .mapToDouble(stock -> stock.getBuyPrice() * stock.getQuantity())
                 .sum();
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        // Simulate fetching current prices for all stocks (replace with actual API calls)
-        Map<String, Double> currentPrices = stocks.stream()
-                .collect(Collectors.toMap(Stock::getTicker, stock -> {
-                    return (double) alphaVantageService.getStockQuote(stock.getTicker()).get("price");
-                }));
+        Map<String, Double> currentPrices = new HashMap<>();
+        for (Stock stock : stocks) {
+            if (!currentPrices.containsKey(stock.getTicker())) {
+                currentPrices.put(stock.getTicker(), (double) alphaVantageService.getStockQuote(stock.getTicker()).get("price"));
+            }
+        }
 
         double totalCurrentValue = stocks.stream()
                 .mapToDouble(stock -> currentPrices.get(stock.getTicker()) * stock.getQuantity())
